@@ -1,0 +1,41 @@
+@if (countries && countries.length > 0) {
+  <table class="table table-hover">
+    <thead>
+      <tr class="text-center">
+        <th>#</th>
+        <th>Icon</th>
+        <th>Flag</th>
+        <th>Name</th>
+        <th>Capital</th>
+        <th>Population</th>
+        <th></th>
+      </tr>
+    </thead>
+    <tbody>
+      @for (country of countries; track idx; let idx = $index) {
+        <tr>
+          <td class="text-center">{{ idx + 1 }}</td>
+          <td class="text-center">{{ country.flag }}</td>
+          <td class="text-center">
+            <img [src]="country.flags.svg" [alt]="country.name.common">
+          </td>
+          <td>{{ country.name.common }}</td>
+          <td>{{ country.capital }}</td>
+          <td class="text-end">{{ country.population | number }}</td>
+          <td class="text-center">
+            <a
+              class="btn btn-primary btn-sm"
+              [routerLink]="['/countries/by', country.cca3]"
+            >
+              Details
+            </a>
+          </td>
+        </tr>
+      }
+    </tbody>
+  </table>
+} @else {
+  <div class="alert alert-warning text-center">
+    No found anything country to show.
+  </div>
+}

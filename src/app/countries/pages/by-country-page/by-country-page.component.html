@@ -1,1 +1,5 @@
-<p>by-country-page works!</p>
+<countries-by-template-page
+  [config]="config"
+  (onValue)="searchByCountry($event)"
+  [countries]="countries"
+></countries-by-template-page>

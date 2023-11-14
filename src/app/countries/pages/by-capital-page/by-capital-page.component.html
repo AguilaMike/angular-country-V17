@@ -1,1 +1,5 @@
-<p>by-capital-page works!</p>
+<countries-by-template-page
+  [config]="config"
+  (onValue)="searchByCapital($event)"
+  [countries]="countries"
+></countries-by-template-page>

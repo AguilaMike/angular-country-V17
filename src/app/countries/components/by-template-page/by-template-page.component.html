@@ -1,0 +1,23 @@
+<h2>{{ config.title }}</h2>
+<hr>
+
+<div class="row">
+  <div class="col">
+    <!-- SearchBox -->
+    <shared-search-box
+      [placeholder]="config.searchBox?.placeholder"
+      (onValue)="onSearchByControl($event)"
+    ></shared-search-box>
+  </div>
+</div>
+
+<hr>
+<div class="row">
+  <div class="col">
+    <!-- CountriesList -->
+    <countries-table
+      [countries]="countries"
+      [config]="config"
+    ></countries-table>
+  </div>
+</div>
