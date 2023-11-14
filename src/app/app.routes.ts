@@ -5,8 +5,9 @@ export const routes: Routes = [
     path: '',
     loadComponent: () => import('./template/pages/principal-template/principal-template.component').then(m => m.PrincipalTemplateComponent),
     children: [
-      { path: '', redirectTo: 'gifs', pathMatch: 'full' },
-      { path: '**', redirectTo: 'gifs'},
+      { path: '', redirectTo: 'countries', pathMatch: 'full' },
+      { path: 'countries', loadChildren: () => import('./countries/countries.routing').then(m => m.routes) },
+      { path: '**', redirectTo: 'countries'},
     ],
   },
   { path: '**', redirectTo: '' },
