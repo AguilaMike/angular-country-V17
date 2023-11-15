@@ -2,6 +2,6 @@
   #txtInput
   type="text"
   [placeholder]="placeholder"
-  (keyup.enter)="onSearchByControl(txtInput.value)"
+  (keyup)="onKeyPress(txtInput.value, $event)"
   class="form-control"
 >

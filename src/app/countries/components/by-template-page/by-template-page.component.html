@@ -1,19 +1,33 @@
-<h2>{{ config.title }}</h2>
+<h2 class="text-center">{{ config.title }}</h2>
 <hr>
 
 <div class="row">
-  <div class="col">
+  <div class="col" [ngClass]="{'text-center': config.isRegion}">
     <!-- SearchBox -->
-    <shared-search-box
-      [placeholder]="config.searchBox?.placeholder"
-      (onValue)="onSearchByControl($event)"
-    ></shared-search-box>
+    @if (config.isRegion) {
+      @for (region of regions; track $index) {
+        <button
+          class="btn mx-2"
+          (click)="onSearchByControl(region); onSelectedregion = region;"
+          [ngClass]="{'btn-outline-primary': region === onSelectedregion}"
+        >{{ region }}</button>
+      }
+    } @else {
+      <shared-search-box
+        [placeholder]="config.searchBox?.placeholder"
+        [searchTerm]="onInitTerm"
+        (onValue)="onSearchByControl($event)"
+      ></shared-search-box>
+    }
   </div>
 </div>
 
 <hr>
 <div class="row">
   <div class="col">
+    @if (config.isLoading) {
+      <shared-loading-spinner></shared-loading-spinner>
+    }
     <!-- CountriesList -->
     <countries-table
       [countries]="countries"

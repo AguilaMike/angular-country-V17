@@ -1,9 +1,8 @@
 import { Component } from '@angular/core';
 
 import { ByTemplatePageComponent } from '../../components/by-template-page/by-template-page.component';
-import { ByTemplatePageInterface } from '../../interfaces/by-template-page.interface';
 import { CountriesService } from '../../services/countries.service';
-import { Country } from '../../interfaces/country';
+import { ByTemplatePageInterface, Country } from '../../interfaces';
 
 @Component({
   standalone: true,
@@ -13,9 +12,15 @@ import { Country } from '../../interfaces/country';
 })
 export class ByCapitalPageComponent {
   public config: ByTemplatePageInterface = {
+    id: 'byCapital',
     title: 'By Capital',
+    isLoading: false,
+    isRegion: false,
     searchBox: {
       placeholder: 'Search by capital...'
+    },
+    table: {
+      noDataCountryText: 'No found anything capital to show.'
     }
   }
   public countries: Country[] = [];
@@ -23,8 +28,10 @@ export class ByCapitalPageComponent {
   constructor(private countriesService: CountriesService) {}
 
   searchByCapital(term: string): void {
+    this.config.isLoading = true;
     this.countriesService.searchByCapital(term).subscribe((countries) => {
       this.countries = countries;
+      this.config.isLoading = false;
     });
   }
 }

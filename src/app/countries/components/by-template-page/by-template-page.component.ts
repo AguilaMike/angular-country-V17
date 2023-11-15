@@ -1,21 +1,27 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { ByTemplatePageInterface } from '../../interfaces/by-template-page.interface';
+import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
+import { NgClass } from '@angular/common';
 
-import { SearchBoxComponent } from '../../../shared/shared.config';
-import { Country } from '../../interfaces/country';
 import { CountryTableComponent } from '../country-table/country-table.component';
+import { LoadingSpinnerComponent, SearchBoxComponent } from '../../../shared/shared.config';
+import { CountriesService } from '../../services/countries.service';
+import { Region, ByTemplatePageInterface, Country } from '../../interfaces';
 
 @Component({
   selector: 'countries-by-template-page',
   standalone: true,
-  imports: [SearchBoxComponent, CountryTableComponent],
+  imports: [SearchBoxComponent, CountryTableComponent, LoadingSpinnerComponent, NgClass],
   templateUrl: './by-template-page.component.html',
   styleUrl: './by-template-page.component.scss'
 })
-export class ByTemplatePageComponent implements OnInit {
+export class ByTemplatePageComponent implements OnInit, OnDestroy {
   @Input() config!: ByTemplatePageInterface;
   @Input() countries!: Country[];
   @Output() onValue: EventEmitter<string> = new EventEmitter<string>();
+  public regions: Region[] = ['Africa', 'Americas', 'Asia', 'Europe', 'Oceania'];
+  public onSelectedregion: Region | null = null;
+  public onInitTerm: string = '';
+
+  constructor(private countriesService: CountriesService) {}
 
   ngOnInit(): void {
     if (!this.config) {
@@ -24,6 +30,13 @@ export class ByTemplatePageComponent implements OnInit {
     if (!this.countries) {
       throw new Error('Countries is required');
     }
+    this.countries = this.countriesService.cacheStore[this.config.id].countries;
+    this.onSelectedregion = this.countriesService.cacheStore[this.config.id].region;
+    this.onInitTerm = this.countriesService.cacheStore[this.config.id].term;
+  }
+
+  ngOnDestroy(): void {
+    this.onSelectedregion = null;
   }
 
   onSearchByControl(term: string): void {
